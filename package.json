@@ -1,34 +1,17 @@
 {
   "name": "express-socket",
-  "version": "1.0.0",
-  "description": "express - socket - redis",
-  "main": "index.js",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "start": "nodemon --inspect index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/kyvc-flydino/express-socket.git"
-  },
-  "keywords": [
-    "socketio"
-  ],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kyvc-flydino/express-socket/issues"
-  },
-  "homepage": "https://github.com/kyvc-flydino/express-socket#readme",
   "dependencies": {
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "https": "^1.0.0",
-    "ioredis": "^5.2.4",
-    "redis": "^4.5.1",
-    "socketio": "^1.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.20"
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "^1.9.2",
+    "morgan": "~1.9.1",
+    "socket.io": "^4.5.4"
   }
 }
