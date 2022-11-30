@@ -37,4 +37,3 @@ class WebSockets {
   }
   
 module.exports = new WebSockets()
-  
