@@ -1,66 +1,77 @@
-const makeValidation = require('@withvoid/make-validation')
+var UserModel = require('../models/User')
 
-const userController = {
-    getAll: (req, res, next) => {
-        return res
-            .status(200)
-            .json({ success: true, message: 'Job well done' })
-    },
-    getById: (req, res, next) => {
-        const { id } = req.params
-
-        return res
-            .status(200)
-            .json({ success: true, message: `Job well done ` + id })
-    },
-    createUser: (req, res, next) => {
-        const { email, name, userType } = req.body
-
-        const result = makeValidation(types => {
-            return {
-                payload: req.body,
-                checks: {
-                    name: { type: types.string, options: { empty: false }},
-                    email: { type: types.string, options: { empty: false }},
-                    userType: {
-                        type: types.enum,
-                        options: {
-                            enum: {
-                                0: 'master',
-                                1: 'member',
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
-        if (!result.success) {
-            return res
-                .status(400)
-                .json({ ...result })
-        }
-
-        const userPayload = {
-            email,
-            name,
-            userType,
-        }
-
-        return res
-           .status(200)
-           .json({
+exports.onGetAllUsers = function (req, res) {
+    try {
+        UserModel.getUsers(function(data) {
+            res.send({
+                status: 200,
                 success: true,
-                message: 'Job well done',
-                data: userPayload
+                data: data
             })
-    },
-    updateUser: (req, res, next) => {
-
-    },
-    deleteUser: (req, res, next) => {
-
+        })
+    } catch (error) {
+        res.send({
+            status: 500,
+            success: false,
+            error: error
+        })
     }
 }
 
-module.exports = userController
+exports.onGetUserById = function (req, res) {
+    try {
+        UserModel.getUserById(req.params.id, function(data) {
+            res.send({
+                status: 200,
+                success: true,
+                data: data
+            })
+        })
+    } catch (error) {
+        res.send({
+            status: 500,
+            success: false,
+            error: error
+        })
+    }
+}
+
+exports.onCreateUser = function (req, res) {
+    try {
+        var data = req.body
+
+        UserModel.createUser(data, function(result){
+            res.send({
+                status: 400,
+                success: true,
+                data: result
+            })
+        })
+    } catch (error) {
+        res.send({
+            status: 500,
+            success: false,
+            error: error
+        })
+    }    
+}
+
+exports.onDeleteUserById = function (req, res) {
+    try {
+        var id = req.params.id
+
+        UserModel.deleteUserById(id, function(result){
+            res.send({
+                status: 200,
+                success: true,
+                data: result
+            })
+        })
+    } catch (error) {
+        res.send({
+            status: 500,
+            success: false,
+            error: error
+        })
+    }
+}
