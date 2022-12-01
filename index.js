@@ -3,14 +3,14 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const { Server } = require('socket.io')
-
-//Socket configuration
-const WebSockets = require('./utils/WebSockets.js')
+const multer = require('multer');
+const upload = multer();
 
 require('./database/connect.js')
 
 //Routes
 const userRouter = require('./routes/user')
+const chatRouter = require('./routes/chat')
 
 const app = express()
 
@@ -21,7 +21,8 @@ app.use(morgan("dev"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use("/users", userRouter)
+app.use('/users', upload.none(), userRouter)
+app.use('/messages', upload.none(), chatRouter)
 
 /** catch 404 and forward to error handler */
 app.use('*', (req, res) => {
@@ -33,10 +34,17 @@ app.use('*', (req, res) => {
 
 /** Create HTTP server. */
 const serve = http.createServer(app)
-const io = new Server(serve)
-/** Create socket connection */
-global.io = io.listen(serve)
-global.io.on('connection', WebSockets.connection)
+const io = new Server(serve).listen(serve)
+
+io.on('connection', socket => {
+    console.log('Welcome to server chat')
+
+    socket.on('connection', socket => {
+        console.log(message)
+        io.emit('message', message)
+    })
+})
+
 /** Listen on provided port, on all network interfaces. */
 serve.listen(port)
 /** Event listener for HTTP server "listening" event. */
