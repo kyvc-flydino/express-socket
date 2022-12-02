@@ -3,14 +3,8 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const { Server } = require('socket.io')
-const multer = require('multer');
-const upload = multer();
 
 require('./database/connect.js')
-
-//Routes
-const userRouter = require('./routes/user')
-const chatRouter = require('./routes/chat')
 
 const app = express()
 
@@ -21,8 +15,8 @@ app.use(morgan("dev"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use('/users', upload.none(), userRouter)
-app.use('/messages', upload.none(), chatRouter)
+const routes = require('./routes/index')
+routes(app)
 
 /** catch 404 and forward to error handler */
 app.use('*', (req, res) => {

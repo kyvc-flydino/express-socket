@@ -2,19 +2,18 @@ var ChatModel = require('../models/chat')
 
 exports.onGetMessage = function (req, res) {
     try {
-        ChatModel.getMessage(req.params.id, function(data) {
-            console.log(data)
+        ChatModel.getMessage(req.params.id, function(result) {
             res.send({
                 status: 200,
                 success: true,
-                data: data
+                result
             })
         })
     } catch (error) {
         res.send({
             status: 500,
             success: false,
-            error: error
+            message: 'Get all messages in room failed!'
         })
     }
 }
@@ -27,14 +26,14 @@ exports.onSendMessage = function (req, res) {
             res.send({
                 status: 200,
                 success: true,
-                data: result
+                result
             })
         })
     } catch (error) {
         res.send({
             status: 500,
             success: false,
-            error: error
+            message: 'Send message failed!'
         })
     }
 }
